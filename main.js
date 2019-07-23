@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         简繁转换
+// @name         繁简体转换
 // @namespace    https://github.com/hao365/chinese_t2s/
 // @version      0.1
 // @description  中文网页繁简体转换油猴脚本
