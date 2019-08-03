@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         繁简体转换
 // @namespace    https://github.com/hao365/chinese_t2s/
-// @version      0.7
+// @version      0.8
 // @description  中文网页繁简体转换油猴脚本
 // @author       高压锅
 // @license      Mozilla Public License Version 2.0
@@ -379,14 +379,14 @@
                 return [1, 'frame text'];
             }
         }
-        var cssEx = new RegExp('標|體|軟|繁|驛|儷|蘋|JhengHei|正黑|CJK TC|PingFang TC', 'i');
+        var exCss = new RegExp('標|體|軟|繁|驛|儷|蘋|JhengHei|正黑|CJK TC|PingFang TC|HKSCS-ExtB|MINGLIU-EXTB|Ming\(for ISO10646\)ExtB', 'i');
         for (var i = 0; i < document.styleSheets.length; i++) {
             var sheet = document.styleSheets[i], css = '';
             try {
                 for (var j = 0; j < sheet.cssRules.length; j++) {
                     css += sheet.cssRules[j].cssText;
                 }
-                if (cssEx.test(css)) {
+                if (exCss.test(css)) {
                     return [1, 'accessable css'];
                 }
             } catch (e) {
@@ -395,7 +395,7 @@
                         aget(sheet.href, (function (url) {
                             return function (d) {
                                 cssFilesCache[url] = d;
-                                cssEx.test(d) && p([1, 'external css']);
+                                exCss.test(d) && p([1, 'external css']);
                             }
                         })(sheet.href));
                     }
@@ -549,8 +549,8 @@
                     if (['https:', 'http:', 'spdy:'].indexOf(sheetLocation.protocol) === -1) {
                         continue;
                     }
-                    if (cssFilesCache[sheet.href]) {
-                        r = we(cssFilesCache[sheet.href], 0);
+                    if (sheet.href in cssFilesCache) {
+                        r = we(cssFilesCache[sheet.href].replace(/\/\*[^]*?\*\//g, ''), 0);
                         if (r[1]) {
                             sheet.disabled = true;
                             cc(docRoot, r[0]);
@@ -560,7 +560,7 @@
                             if (typeof XMLHttpRequest !== 'undefined' && sheet.href && !matchDomains(sheetLocation.hostname, cssExcludeDomains)) {
                                 aget(sheet.href, (function (sheet) {
                                     return function (d) {
-                                        var r = we(d, 0);
+                                        var r = we(d.replace(/\/\*[^]*?\*\//g, ''), 0);
                                         if (r[1]) {
                                             //document.querySelector('link[href$="' + sheet.href.split(':', 2).pop() + '" i]').disabled = true;
                                             sheet.disabled = true;
