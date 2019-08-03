@@ -4,6 +4,7 @@
 // @version      0.4
 // @description  中文网页繁简体转换油猴脚本
 // @author       高压锅
+// @license      Mozilla Public License Version 2.0
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
