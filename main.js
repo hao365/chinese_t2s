@@ -341,15 +341,15 @@
         }
         var imgs = document.querySelectorAll('img[id=logo i],img[id=banner i],img[id=copyright i],img[id=slogan i]');
         for (var i = 0; i < imgs.length; i++) {
-            if (commonTChars.test(imgs[i].innerText)) {
+            if (commonTChars.test(imgs[i].alt)) {
                 return [1, 'imgs alt T'];
             }
         }
         for (var i = 0; i < imgs.length; i++) {
-            if (commonSChars.test(imgs[i].innerText)) {
+            if (commonSChars.test(imgs[i].alt)) {
                 return [0, 'imgs alt S'];
             }
-            if (!zh && exZh.test(imgs[i].innerText)) {
+            if (!zh && exZh.test(imgs[i].alt)) {
                 zh = true;
             }
         }
