@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         繁简体转换
 // @namespace    https://github.com/hao365/chinese_t2s/
-// @version      0.4
+// @version      0.7
 // @description  中文网页繁简体转换油猴脚本
 // @author       高压锅
 // @license      Mozilla Public License Version 2.0
@@ -553,7 +553,7 @@
                         r = we(cssFilesCache[sheet.href], 0);
                         if (r[1]) {
                             sheet.disabled = true;
-                            cc(r[0]);
+                            cc(docRoot, r[0]);
                         }
                     } else {
                         try {
@@ -564,7 +564,7 @@
                                         if (r[1]) {
                                             //document.querySelector('link[href$="' + sheet.href.split(':', 2).pop() + '" i]').disabled = true;
                                             sheet.disabled = true;
-                                            cc(r[0]);
+                                            cc(docRoot, r[0]);
                                         }
                                     }
                                 })(sheet));
@@ -618,7 +618,7 @@
             return [r.join(k), b];
         }
     }
-    function cc(c) {
+    function cc(docRoot, c) {
         var s = docRoot.createElement('style');
         s.type = 'text/css';
         s.appendChild(docRoot.createTextNode(c));
