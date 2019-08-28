@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         繁简体转换
 // @namespace    https://github.com/hao365/chinese_t2s/
-// @version      0.12
+// @version      0.13
 // @description  中文网页繁简体转换油猴脚本
 // @author       高压锅 (12736433@qq.com)
 // @license      Mozilla Public License Version 2.0
