@@ -110,7 +110,7 @@
         ap(reason) {
             this.b = 1;
             this.reason = reason;
-            new this.proc.constructor(this);
+            this.proc.p(this);
             for (const [frm, o] of this.mFrms) {
                 frm.postMessage({chinese_t2s_response: 1}, o);
             }
@@ -282,12 +282,6 @@
                 this.reason = 'meta content T';
                 return 1;
             }
-            /*
-            if (this.expCommonTChars.test(desc)) {
-                this.reason = 'meta content T';
-                return 1;
-            }
-             */
             if (this.expCommonSChars.test(desc)) {
                 this.reason = 'meta content S';
                 return 2;
@@ -309,7 +303,6 @@
             ];
             let es = this.doc.querySelector('noscript');
             if (es) {
-                //if (this.expCommonTChars.test(es.innerText)) {
                 if (this.testText(es.innerText)) {
                     this.reason = 'noscript T';
                     return 1;
@@ -375,8 +368,9 @@
                     acceptNode: node => (['SCRIPT', 'STYLE', 'NOSCRIPT', 'IMG'].includes(node.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
                 }, false);
                 while (n = walker.nextNode()) {
-                    ++nn;
-                    if (n.nodeType === 3 && n.data) {
+                    if (n.nodeType === Node.ELEMENT_NODE) {
+                        ++nn;
+                    } else if (n.nodeType === 3) {
                         s += n.data;
                         if (s.length > 500) {
                             break;
@@ -683,7 +677,7 @@
         }
         f(e) {
             let r, v, n, attrs, walker = this.docRoot.createTreeWalker(e, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
-                acceptNode: node => (['SCRIPT', 'STYLE', 'IFRAME'].includes(node.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
+                acceptNode: node => (['SCRIPT', 'NOSCRIPT', 'STYLE', 'IFRAME'].includes(node.tagName)) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT
             }, false);
             while (n = walker.nextNode()) {
                 if (n.nodeType === Node.ELEMENT_NODE) {
@@ -755,20 +749,24 @@
     }
     new class {
         constructor(sensor) {
+            sensor.proc = this;
+            this.p(sensor);
+        }
+        
+        p(sensor) {
             if (!this.k) {
-                document.addEventListener('keyup', (e) => {
+                Utils.isFrame || document.addEventListener('keyup', (e) => {
                     if (e.ctrlKey && e.keyCode == 117) {
                         new Convertor(sensor.doc);
                     }
                 });
                 this.k = 1;
             }
-            sensor.proc = this;
             if (window.chinese_t2s) {
                 return;
             }
             window.chinese_t2s = sensor.b;
-            //console.log((window.parent !== window.self ? 'Frame ' : '') + 'B(' + location.href + '): ' + sensor.b + '->' + sensor.reason);
+            console.log((window.parent !== window.self ? 'Frame ' : '') + 'B(' + location.href + '): ' + sensor.b + '->' + sensor.reason);
             if (sensor.b === 1) {
                 new Convertor(sensor.doc);
                 if (!Utils.isFrame) {
