@@ -766,7 +766,7 @@
                 return;
             }
             window.chinese_t2s = sensor.b;
-            console.log((window.parent !== window.self ? 'Frame ' : '') + 'B(' + location.href + '): ' + sensor.b + '->' + sensor.reason);
+            //console.log((window.parent !== window.self ? 'Frame ' : '') + 'B(' + location.href + '): ' + sensor.b + '->' + sensor.reason);
             if (sensor.b === 1) {
                 new Convertor(sensor.doc);
                 if (!Utils.isFrame) {
